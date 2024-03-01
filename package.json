@@ -2,8 +2,8 @@
   "name": "priority",
   "version": "1.0.0",
   "description": "Organise your todos",
-  "main": "index.html",
-  "source": "src/index.html",
+  "main": "index.js",
+  "source": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel",
