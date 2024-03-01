@@ -1,25 +1,28 @@
 {
+
   "name": "priority",
-  "version": "1.0.0",
-  "description": "Organise your todos",
-  "main": "app.js",
-  "source": "src/app.js",
+
+  "source": "src/index.html",
+
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+
     "start": "parcel",
+
     "build": "parcel build"
+
   },
-  "keywords": [
-    "todo",
-    "list"
-  ],
-  "author": "daz4126@gmail.com",
-  "license": "Unlicense",
+
   "dependencies": {
+
     "htm": "^3.1.1",
     "preact": "^10.19.6"
+
   },
+
   "devDependencies": {
-    "parcel": "^2.12.0"
+
+    "parcel": "latest"
+
   }
+
 }
