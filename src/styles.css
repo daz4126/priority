@@ -6,7 +6,8 @@ main ul#todos,#instructions,#stats{
   }
   
   main ul#todos.priority{
-    box-shadow: 3px 12px 8px rgba(0,0,0,0.2), -3px 12px 8px rgba(0,0,0,0.2);
+    border: var(--FMauve) 6px solid;
+    box-shadow: 3px 12px 8px rgba(0,0,0,0.2);
   }
   
   .completed-task{
@@ -16,9 +17,14 @@ main ul#todos,#instructions,#stats{
   .task,.completed-task{
     font-size: 24px;
     margin-left: 12px;
+    padding-bottom: 4px;
+    vertical-align: middle;
   }
   
   .list-item .task-buttons{
+    position: absolute;
+    top: 10px;
+    right: 0;
     display: none;
   }
   
@@ -32,7 +38,7 @@ main ul#todos,#instructions,#stats{
   
   .list-item{
     border-bottom: var(--lightGrey) dotted 1px;
-    padding: 8px 0;
+    position: relative;
   }
   
   .list-item:last-child{
@@ -54,7 +60,7 @@ main ul#todos,#instructions,#stats{
     margin: 0 auto;
   }
   
-  .buttons button,#completed-button{
+  .buttons button,#stats-button{
     font-size: 1.2em;
     margin: 10px;
     text-transform: uppercase;
@@ -81,12 +87,11 @@ main ul#todos,#instructions,#stats{
     font-size: 1.6em;
   }
   
-  .exclamation{
-    font-size: 3em;
+  .exclamation,.number{
+    font-size: 2.4em;
     font-family: var(--heading-font);
     font-weight: bold;
-    margin: -0.4em 0 -0.4em 10px;
-    display: inline-block;
+    vertical-align: middle;
   }
   
   .task-buttons select{
@@ -108,22 +113,21 @@ main ul#todos,#instructions,#stats{
   }
   
   .list-item input[type="checkbox"]{
-      width: 40px;
-      height: 40px;
-      vertical-align: top;
-      border: none;
-      appearance: none;
-      -webkit-appearance: none;
-      outline: none;
-      margin-top: -2px;
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
     background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23949494%22%20stroke-width%3D%223%22/%3E%3C/svg%3E');
   
     background-repeat: no-repeat;
-      background-position: center left;
+    background-position: center left;
   }
   
   .list-item input[type="checkbox"]:checked {
-        background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2359A193%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20fill%3D%22%233EA390%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22%2F%3E%3C%2Fsvg%3E');
+      background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2359A193%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20fill%3D%22%233EA390%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22%2F%3E%3C%2Fsvg%3E');
       background-repeat: no-repeat;
       background-position: center left;
   }
@@ -151,4 +155,15 @@ main ul#todos,#instructions,#stats{
   #clear-button:hover{
     color: var(--blue) !important;
     background: var(--lightBlue);
+  }
+
+  @media screen and (max-width: 600px) {
+    .buttons button{
+      font-size: 1em;
+    }
+  }
+
+  #stats-button{
+    margin: 10px auto;
+    display: block;
   }

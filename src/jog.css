@@ -954,16 +954,7 @@ label.warning{
 }
 
 @media screen and (max-width: 600px) {
-  .container {
-    width: 100%;
-  }
 
-  .col,
-  [class*="col-"],
-  [class^="col-"] {
-    flex: 0 1 100%;
-    max-width: 100%;
-  }
 }
 
 /* Nav */

@@ -57,16 +57,18 @@ const View = state => {
     
     
     // ListItem component
-    const ListItem = item => 
+    const ListItem = ({item,position}) => 
      state.HTML`<li class="list-item" id="${item.id}" key="${item.id}" draggable=${state.mode === "tasks"} ondragstart=${dragstart} ondragend=${dragend} ondragover=${ e => e.preventDefault() } ondrop=${ e => e.preventDefault() } ondragleave=${dragleave}>
-            ${state.mode === "completed" ? "" : 
+     ${state.mode === "tasks" && state.HTML`<span class="number">${position}</span>`}
+     ${state.mode === "priority" && state.HTML`<span class="exclamation">!</span>`}
+
+     ${state.mode === "completed" ? "" : 
             state.HTML`<input type="checkbox" 
                               checked=${item.complete} 
                               onchange=${check(item)} />`}
-   ${state.mode === "priority" && state.HTML`<span class="exclamation">!</span>`}
                        <span class=${item.complete && state.mode !== "completed" ? "completed-task" : "task"}>${item.text}</span>
                        
-                       ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`<div class="task-buttons float-end">
+                       ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`<div class="task-buttons">
    ${state.mode === "snoozed" ?
           state.HTML`<button class="outline" onclick=${e => unsnooze(item)}>UNSNOOZE</button>`
           :
@@ -79,7 +81,8 @@ const View = state => {
                    <option value=36500>Forever</option>
                  </select>`}                                   
                  <button class="inline outline" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}>╳</button>   
-                      </div>`}    
+                      </div>`}
+               ${state.mode === "snoozed" ? state.HTML`<div class="italic lightGrey-text date-info">Snoozed ${item.snoozed - Date.now() > 365 * 24 * 3600000 ? "forever" : item.snoozed - Date.now() < 1000 * 3600 * 24 ? "until tomorrow" : "until " + new Date(item.snoozed).toLocaleDateString("en-us",{weekday: 'long'})}</div>` : ""} 
                ${state.mode === "completed" && item.complete ? state.HTML`<div class="italic lightGrey-text date-info">Completed on ${new Date(item.complete).toLocaleDateString("en-us",{weekday: 'short',month: 'short', day: 'numeric'})}</div>` : ""}
                   </li>`
     
@@ -101,28 +104,28 @@ const View = state => {
     ${
       state.mode === "instructions" ?
       state.HTML`<section id="instructions">
-    <h1 class="display-3">The ultimate todo list that helps you focus on what's important ...</h1><ul><li>Keep everything you have to do in your task list and order it by priority, with the most important tasks at the top. Drag and drop to to change the list order.</li><li>Snooze any tasks you don't want to think about at the moment or if you're waiting for someone else to do something (don't worry, snoozed tasks will automatically reappear in your task list once they've finished snoozing). Click on the SNOOZED button to see all your snoozed tasks or unsnooze them.</li><li>Click on the PR!OR!TY! button when you need focus on your top 3 tasks. These are the tasks that you are currently working on.</li><li>Completed tasks are automatically removed from the task list a day after completion. You can still see them by clicking on the COMPLETED button.</li><li>Click on the TASK LIST button start adding stuff to do!</li>
+    <h1 class="display-3">The todo list that helps you focus on what's important ...</h1><ul>
+    <li>Order your tasks by priority.</li>
+    <li>Snooze any tasks you don't want to think about right (don't worry, snoozed tasks will automatically reappear once they've finished snoozing).</li>
+    <li>Click on the PR!OR!TY! button when you need focus on your top 3 tasks.</li>
+    <li>Completed tasks are automatically removed from the task list a day after completion.</li>
     </ul>
     </section>`
     :
     state.mode === "stats" ?
       state.HTML`<section id="stats">
-      <p class="italic text-center">There are no stats yet!</p>
+      <p class="italic text-center">You have completed ${state.completed.length + state.list.filter(item => item.complete).length} task${state.completed.length + state.list.filter(item => item.complete).length === 1 ? "" : "s"}!</p>
        </section>`
     :
      currentList().length ?
-     state.HTML`<ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map(item => state.HTML`<${ListItem} ...${item} />`)}</ul>
+     state.HTML`<ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
      <p onclick=${clearComplete} id="clear-button" class=${`${state.mode === "tasks" ? "" : "hidden"} text-center italic lightGrey-text rounded`}>Clear Completed Tasks</p>` 
     : state.HTML`<p id="message" class="text-center"><em>This list is empty!</em></p>`
     }
-    <div class="buttons row">
-    <button class=${`${state.mode === "completed" ? "blue" : "outline"} col`} onclick=${event => state.Update({mode: "completed"})}>Completed</button>
-    <button class=${`${state.mode === "stats" ? "blue" : "outline"} col`} onclick=${event => state.Update({mode: "stats"})}>Stats</button>
-    <button class=${`${state.mode === "instructions" ? "blue" : "outline"} col`} onclick=${event => state.Update({mode: "instructions"})}>Instructions</button>
-    </div>
+    <button id="stats-button" class=${`${state.mode === "stats" ? "blue" : "outline"}`} onclick=${event => state.Update({mode: "stats"})}>Stats</button>
     </main>
     <footer class="text-center" hidden=${state.mode === "priority"}>
-    <p>Another beautifully unconventional <span class="JOG"><span class="J">J</span>O<span class="G">G</span></span> production made with 💚🤍💜 in <a href="https://github.com/daz4126/Nanny-State" title="Nanny State">Nanny State</a></p>
+    <p>Another beautifully unconventional <span class="JOG"><span class="J">J</span>O<span class="G">G</span></span> production made with 💚🤍💜</p>
     </footer>`
   }
   
