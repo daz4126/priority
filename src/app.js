@@ -108,7 +108,6 @@ const View = state => {
     <li>Order your tasks by priority.</li>
     <li>Snooze any tasks you don't want to think about right (don't worry, snoozed tasks will automatically reappear once they've finished snoozing).</li>
     <li>Click on the PR!OR!TY! button when you need focus on your top 3 tasks.</li>
-    <li>Completed tasks are automatically removed from the task list a day after completion.</li>
     </ul>
     </section>`
     :
@@ -132,9 +131,7 @@ const View = state => {
   // Initiate function - always runs at the start
   const Initiate = state => {
     return {
-      mode: state.list.length ? "tasks" : "instructions",
-      list: state.list.filter(item => (!item.complete || Date.now() - item.complete < 1000 * 60 * 60 * 24)),
-      completed: [...state.completed, ...state.list.filter(item => (item.complete && Date.now() - item.complete >= 1000 * 60 * 60 * 24))]
+      mode: state.list.length ? "tasks" : "instructions"
     }
   }
   
