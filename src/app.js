@@ -104,7 +104,7 @@ const View = state => {
     ${
       state.mode === "instructions" ?
       state.HTML`<section id="instructions">
-    <h1 class="display-3">The todo list that helps you focus on what's important ...</h1><ul>
+    <h1 class="display-3">The todo list that lets you focus on what's important ...</h1><ul>
     <li>Order your tasks by priority.</li>
     <li>Snooze any tasks you don't want to think about right (don't worry, snoozed tasks will automatically reappear once they've finished snoozing).</li>
     <li>Click on the PR!OR!TY! button when you need focus on your top 3 tasks.</li>
