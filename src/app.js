@@ -122,7 +122,7 @@ const View = state => {
        </section>`
     :     
      state.HTML`<ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
-     <p id="message" class="text-center"><em>${currentList().length ? `${currentList().filter(item => item.complete).length} item${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : `This list is empty!`}</em></p>
+     <p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} item${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>
      `
     }
     <div id="bottom-buttons" class=${`${state.mode === "tasks" ? "" : "hidden"} row`}>
