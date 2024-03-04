@@ -120,15 +120,12 @@ const View = state => {
       state.HTML`<section id="stats">
       <p class="italic text-center">You have completed ${state.completed.length + state.list.filter(item => item.complete).length} task${state.completed.length + state.list.filter(item => item.complete).length === 1 ? "" : "s"}!</p>
        </section>`
-    :
-     currentList().length ?
+    :     
      state.HTML`<ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
-      `
-    
-     : state.HTML`<p id="message" class="text-center"><em>This list is empty!</em></p>`
+     <p id="message" class="text-center"><em>${currentList().length ? `${currentList().filter(item => item.complete).length} item${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : `This list is empty!`}</em></p>
+     `
     }
     <div id="bottom-buttons" class=${`${state.mode === "tasks" ? "" : "hidden"} row`}>
-     <span class="col-3 italic">${state.list.filter(item => !item.complete).length} item${state.list.filter(item => !item.complete).length === 1 ? "" : "s"} left</span>
      <ul id="filters" class="col-6 row no-bullet">
       <li class=${`${state.filter ? "" : "active"} text-center col tag`}><a href="#/" onclick=${filter(false)}>All</a></li>
       <li class=${`${state.filter === "active" ? "active" : ""} text-center col tag`}><a href="#/active" onclick=${filter("active")}>Active</a></li>
