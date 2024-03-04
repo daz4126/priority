@@ -170,6 +170,12 @@ main ul#todos,#instructions,#stats{
 
   #bottom-buttons .tag a{
     color: var(--lightGrey);
+    display: block;
+    width: 100%;
+  }
+
+  #bottom-buttons .tag a:hover{
+    color: var(--darkGrey);
   }
 
   #bottom-buttons .tag:hover{
@@ -177,12 +183,11 @@ main ul#todos,#instructions,#stats{
   }
 
   #bottom-buttons .active.tag{
-    background: var(--green);
     border-color: var(--green);
   }
 
   #bottom-buttons .active.tag a{
-    color: var(--blue);
+    color: var(--darkGrey);
     font-weight: bold;
   }
 
@@ -195,4 +200,8 @@ main ul#todos,#instructions,#stats{
 
   #bottom-buttons .clear-completed:hover{
     color: var(--red);
+  }
+
+  #message{
+    margin: 10px 0 -10px 0;
   }
