@@ -121,7 +121,7 @@ const View = state => {
       <p class="italic text-center">You have completed ${state.completed.length + state.list.filter(item => item.complete).length} task${state.completed.length + state.list.filter(item => item.complete).length === 1 ? "" : "s"}!</p>
        </section>`
     :     
-     state.HTML`<p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} item${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>
+     state.HTML`<p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} thing${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>
      <ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
      `
     }
