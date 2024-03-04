@@ -195,10 +195,6 @@ a {
   text-decoration: none;
 }
 
-a:hover:not(.button) {
-  opacity: 0.75;
-}
-
 button {
   font-family: inherit;
 }
@@ -1101,7 +1097,6 @@ label.warning{
   border: 1px solid var(--lightGrey);
   border-radius: 5px;
   padding: 0.4rem;
-  line-height: 1;
   font-size: 0.8em;
   margin: var(--mini-margin);
 }

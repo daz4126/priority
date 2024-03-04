@@ -55,7 +55,7 @@ main ul#todos,#instructions,#stats{
     margin-top: 150px;
   }
   
-  .buttons.row{
+  .buttons.row, #bottom-buttons{
     max-width: 40em;
     margin: 0 auto;
   }
@@ -166,4 +166,33 @@ main ul#todos,#instructions,#stats{
   #stats-button{
     margin: 10px auto;
     display: block;
+  }
+
+  #bottom-buttons .tag a{
+    color: var(--lightGrey);
+  }
+
+  #bottom-buttons .tag:hover{
+    background: var(--lightGrey);
+  }
+
+  #bottom-buttons .active.tag{
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  #bottom-buttons .active.tag a{
+    color: var(--blue);
+    font-weight: bold;
+  }
+
+  #bottom-buttons .clear-completed{
+    border: none;
+    background: none;
+    color: var(--darkGrey);
+    font-size: 0.8em;
+  }
+
+  #bottom-buttons .clear-completed:hover{
+    color: var(--red);
   }
