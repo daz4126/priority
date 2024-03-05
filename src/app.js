@@ -78,13 +78,18 @@ const View = state => {
                               checked=${item.complete} 
                               onchange=${check(item)} />`}
                        <span class=${item.complete && state.mode !== "completed" ? "completed-task" : "task"}>${item.text}</span>
-                       
                        ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`<div class="task-buttons">
+                       ${state.mode === "tasks" &&
+      state.HTML`<select onchange=${e => state.Replace("list",state.list.findIndex(x => item.id === x.id),{...item,category: e.target.value})} class="inline">
+      <option selected disabled>Category</option>
+      ${state.categories.map(category => state.HTML`<option selected=${item.category === category[0]} value=${category[0]}>${category[0]}</option>`)}
+    </select>`
+      }
    ${state.mode === "snoozed" ?
           state.HTML`<button class="outline" onclick=${e => unsnooze(item)}>UNSNOOZE</button>`
           :
       state.HTML`<select onchange=${e => snooze(item,event.target.value)} class="inline">
-                   <option selected disabled>SNOOZE</option>
+                   <option selected disabled>ZZZ</option>
                    <option value=1>1 Day</option>
                    <option value=2>2 Days</option>
                    <option value=3>3 Days</option>
@@ -93,6 +98,7 @@ const View = state => {
                  </select>`}                                   
                  <button class="inline outline" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}>╳</button>   
                       </div>`}
+      
                ${state.mode === "snoozed" ? state.HTML`<div class="italic lightGrey-text date-info">Snoozed ${item.snoozed - Date.now() > 365 * 24 * 3600000 ? "forever" : item.snoozed - Date.now() < 1000 * 3600 * 24 ? "until tomorrow" : "until " + new Date(item.snoozed).toLocaleDateString("en-us",{weekday: 'long'})}</div>` : ""} 
                ${state.mode === "completed" && item.complete ? state.HTML`<div class="italic lightGrey-text date-info">Completed on ${new Date(item.complete).toLocaleDateString("en-us",{weekday: 'short',month: 'short', day: 'numeric'})}</div>` : ""}
                   </li>`

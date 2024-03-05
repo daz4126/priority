@@ -96,8 +96,17 @@ main ul#todos,#instructions,#stats{
   
   .task-buttons select{
     display: inline;
-    width: 6.2em;
+    width: 6em;
     text-align: center;
+    font-size: 0.8em;
+    margin-right: 2px;
+    padding: 4px;
+  }
+
+  .task-buttons button:hover{
+    color: var(--red);
+    border-color: var(--red);
+    font-weight: bold;
   }
   
   #todos li:first-child .exclamation{
