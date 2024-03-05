@@ -81,7 +81,7 @@ const View = state => {
                        ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`<div class="task-buttons">
                        ${state.mode === "tasks" &&
       state.HTML`<select onchange=${e => state.Replace("list",state.list.findIndex(x => item.id === x.id),{...item,category: e.target.value})} class="inline">
-      <option selected disabled>Category</option>
+      <option selected disabled></option>
       ${state.categories.map(category => state.HTML`<option selected=${item.category === category[0]} value=${category[0]}>${category[0]}</option>`)}
     </select>`
       }
