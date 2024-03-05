@@ -59,6 +59,12 @@ const View = state => {
       event.preventDefault()
       state.Update({filter: type})
     }
+
+    const toggleCategory = index => event => {
+      event.preventDefault()
+      const category = state.categories[index]
+      state.Replace("categories",index,[category[0],!category[1]])
+    }
     
     
     // ListItem component
@@ -121,18 +127,19 @@ const View = state => {
       <p class="italic text-center">You have completed ${state.completed.length + state.list.filter(item => item.complete).length} task${state.completed.length + state.list.filter(item => item.complete).length === 1 ? "" : "s"}!</p>
        </section>`
     :     
-     state.HTML`<p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} thing${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>
-     <ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
-     `
-    }
-    <div id="bottom-buttons" class=${`${state.mode === "tasks" ? "" : "hidden"} row`}>
-     <ul id="filters" class="col-6 row no-bullet">
+     state.HTML`
+     <div id="filters" class=${`${state.mode === "tasks" ? "" : "hidden"} row`}>
+     <ul id="filters" class="col-9 row no-bullet">
       <li class=${`${state.filter ? "" : "active"} text-center col tag`}><a href="#/" onclick=${filter(false)}>All</a></li>
+      ${state.categories.map((category,index) => state.HTML`<li class=${`${category[1] ? "active" : ""} text-center col tag`}><a href="#/${category[0]}" onclick=${toggleCategory(index)}>${category[0]}</a></li>`)}
       <li class=${`${state.filter === "active" ? "active" : ""} text-center col tag`}><a href="#/active" onclick=${filter("active")}>Active</a></li>
       <li class=${`${state.filter === "completed" ? "active" : ""} text-center col tag`}><a href="#/completed" onclick=${filter("completed")}>Completed</a></li>
-     </ul>
+      </ul>
      <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hidden"} col italic text-right clear-completed`}>Clear Completed</button>
-      </div>
+    </div>
+     <ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
+     <p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} thing${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>`
+    }
     <button id="stats-button" class=${`${state.mode === "stats" ? "blue" : "outline"}`} onclick=${event => state.Update({mode: "stats"})}>Stats</button>
     </main>
     <footer class="text-center" hidden=${state.mode === "priority"}>
@@ -153,6 +160,7 @@ const View = state => {
     completed: [],
     mode: "tasks",
     filter: false,
+    categories: [["Home",true],["Work",true],["Hobbies",true]],
     Initiate,
     LocalStorageKey: "priority96",
     Debug: true,
