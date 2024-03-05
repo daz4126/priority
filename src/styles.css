@@ -172,7 +172,7 @@ main ul#todos,#instructions,#stats{
     width: 100%;
   }
 
-  #filters .tag:hover{
+  #filters .tag a:hover{
     color: var(--darkGrey);
   }
 
@@ -204,5 +204,9 @@ main ul#todos,#instructions,#stats{
   }
 
   #message{
-    margin: 0;
+    margin: -10px 0 10px;
+  }
+
+  .hide{
+    visibility: hidden !important;
   }

@@ -141,7 +141,7 @@ const View = state => {
       <li class=${`${state.filter === "active" ? "active" : ""} text-center col tag`}><a href="#/active" onclick=${filter("active")}>Active</a></li>
       <li class=${`${state.filter === "completed" ? "active" : ""} text-center col tag`}><a href="#/completed" onclick=${filter("completed")}>Completed</a></li>
       </ul>
-     <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hidden"} col italic text-right clear-completed`}>Clear Completed</button>
+     <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hide"} col italic text-right clear-completed`}>Clear Completed</button>
     </div>
      <ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
      <p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} thing${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>`
