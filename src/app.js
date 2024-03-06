@@ -80,9 +80,9 @@ const View = state => {
                        <span class=${item.complete && state.mode !== "completed" ? "completed-task" : "task"}>${item.text}</span>
                        ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`
       <div class="task-buttons">
-      <button class="inline outline delete-button" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}>╳</button>   
+      <button class="inline outline delete-button" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}><i class="fa-solid fa-trash"></i></button>   
    ${state.mode === "snoozed" ?
-          state.HTML`<button class="outline unsnooze-button" onclick=${e => unsnooze(item)}>unsnooze</button>`
+          state.HTML`<button class="outline unsnooze-button" onclick=${e => unsnooze(item)}><i class="fa-solid fa-clock-rotate-left"></i></button>`
           :
       state.HTML`<select onchange=${e => snooze(item,e.target.value)} class="inline">
                    <option selected disabled>snooze</option>
