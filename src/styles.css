@@ -31,6 +31,17 @@ main ul#todos,#instructions,#stats{
   .list-item:hover .task-buttons{
     display: block;
   }
+
+  .list-item .category{
+    position: absolute;
+    top: 10px;
+    right: 0;
+    display: block;
+  }
+
+  .list-item:hover .category{
+    display: none;
+  }
   
   .date-info{
     padding-left: 12px;
@@ -99,15 +110,23 @@ main ul#todos,#instructions,#stats{
     width: 6em;
     text-align: center;
     font-size: 0.8em;
-    margin-right: 4px;
+    margin: 0 4px;
     padding: 6px 8px;
     border-radius: 4px;
   }
 
-  .task-buttons button:hover{
+  .task-buttons button{
+    font-size: 0.8em;
+  }
+
+  .task-buttons button.delete-button:hover{
     color: var(--red);
     border-color: var(--red);
-    font-weight: bold;
+  }
+
+  .task-buttons button.unsnooze-button:hover{
+    color: var(--blue);
+    border-color: var(--blue);
   }
   
   #todos li:first-child .exclamation{
@@ -181,7 +200,7 @@ main ul#todos,#instructions,#stats{
   }
 
   #filters .active.tag{
-    border-color: var(--green);
+    border-color: var(--darkGrey);
   }
 
   #filters .active.tag a{
@@ -209,4 +228,16 @@ main ul#todos,#instructions,#stats{
 
   .hide{
     visibility: hidden !important;
+  }
+
+  #filters .category1.active, .list-item .category1{
+    border-color: var(--blue);
+  }
+
+  #filters .category2.active, .list-item .category2{
+    border-color: var(--green);
+  }
+
+  #filters .category3.active, .list-item .category3{
+    border-color: var(--red);
   }

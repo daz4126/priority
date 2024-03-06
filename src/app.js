@@ -5,7 +5,7 @@ const View = state => {
     // fucntion to add a new item to the main list
     const addTodo = event => {
       event.preventDefault()
-      state.Append("list",{id: Date.now().toString(36), text: event.target.task.value, complete: false, snoozed: false, created: Date.now()})
+      state.Append("list",{id: Date.now().toString(36), text: event.target.task.value, complete: false, snoozed: false, created: Date.now(), category: "Work"})
       event.target.task.value = ""
     }
     
@@ -22,7 +22,7 @@ const View = state => {
     const currentList = () =>  state.mode === "completed" ? [...state.list.filter(item => item.complete),...state.completed]
                       : state.mode === "snoozed" ? state.list.filter(item => item.snoozed && item.snoozed - Date.now() > 0)
                       : state.mode === "priority"  ? state.list.filter(item => !item.complete && (!item.snoozed || item.snoozed - Date.now() < 0)).slice(0,3) 
-                      : state.list.filter(item => state.filter ? state.filter === "completed" ? item.complete : !item.complete : item).filter(item => (!item.complete || Date.now() - item.complete < 1000 * 60 * 60 * 24) && (!item.snoozed || item.snoozed - Date.now() < 0))
+                      : state.list.filter(item => (state.filter ? state.filter === "completed" ? item.complete : !item.complete : item) && (!item.category || state.categories.find(category => category[0] === item.category)[1]) && (!item.snoozed || item.snoozed - Date.now() < 0))
     
     // clears completed tasks
     const clearComplete = () => state.Update({
@@ -78,29 +78,30 @@ const View = state => {
                               checked=${item.complete} 
                               onchange=${check(item)} />`}
                        <span class=${item.complete && state.mode !== "completed" ? "completed-task" : "task"}>${item.text}</span>
-                       ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`<div class="task-buttons">
-                       ${state.mode === "tasks" &&
-      state.HTML`<select onchange=${e => state.Replace("list",state.list.findIndex(x => item.id === x.id),{...item,category: e.target.value})} class="inline">
-      <option selected disabled></option>
-      ${state.categories.map(category => state.HTML`<option selected=${item.category === category[0]} value=${category[0]}>${category[0]}</option>`)}
-    </select>`
-      }
+                       ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`
+      <div class="task-buttons">
+      <button class="inline outline delete-button" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}>╳</button>   
    ${state.mode === "snoozed" ?
-          state.HTML`<button class="outline" onclick=${e => unsnooze(item)}>UNSNOOZE</button>`
+          state.HTML`<button class="outline unsnooze-button" onclick=${e => unsnooze(item)}>unsnooze</button>`
           :
-      state.HTML`<select onchange=${e => snooze(item,event.target.value)} class="inline">
-                   <option selected disabled>ZZZ</option>
+      state.HTML`<select onchange=${e => snooze(item,e.target.value)} class="inline">
+                   <option selected disabled>snooze</option>
                    <option value=1>1 Day</option>
                    <option value=2>2 Days</option>
                    <option value=3>3 Days</option>
                    <option value=7>1 Week</option>
                    <option value=36500>Forever</option>
-                 </select>`}                                   
-                 <button class="inline outline" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}>╳</button>   
-                      </div>`}
+                 </select>`}
+
+                 <select onchange=${e => state.Replace("list",state.list.findIndex(x => item.id === x.id),{...item,category: e.target.value})} class="inline">
+      ${state.categories.map(category => state.HTML`<option selected=${item.category === category[0]} value=${category[0]}>${category[0]}</option>`)}
+      </select>                              
+                      </div>
+                     <span class="category category${state.categories.findIndex(category => category[0] === item.category)+1} tag">${item.category}</span>
+                      `
+                    }
       
-               ${state.mode === "snoozed" ? state.HTML`<div class="italic lightGrey-text date-info">Snoozed ${item.snoozed - Date.now() > 365 * 24 * 3600000 ? "forever" : item.snoozed - Date.now() < 1000 * 3600 * 24 ? "until tomorrow" : "until " + new Date(item.snoozed).toLocaleDateString("en-us",{weekday: 'long'})}</div>` : ""} 
-               ${state.mode === "completed" && item.complete ? state.HTML`<div class="italic lightGrey-text date-info">Completed on ${new Date(item.complete).toLocaleDateString("en-us",{weekday: 'short',month: 'short', day: 'numeric'})}</div>` : ""}
+               ${state.mode === "snoozed" ? state.HTML`<div class="italic lightGrey-text">Snoozed ${item.snoozed - Date.now() > 365 * 24 * 3600000 ? "forever" : item.snoozed - Date.now() < 1000 * 3600 * 24 ? "until tomorrow" : "until " + new Date(item.snoozed).toLocaleDateString("en-us",{weekday: 'long'})}</div>` : ""} 
                   </li>`
     
     // main view
@@ -136,10 +137,10 @@ const View = state => {
      state.HTML`
      <div id="filters" class=${`${state.mode === "tasks" ? "" : "hidden"} row`}>
      <ul id="filters" class="col-9 row no-bullet">
-      <li class=${`${state.filter ? "" : "active"} text-center col tag`}><a href="#/" onclick=${filter(false)}>All</a></li>
-      ${state.categories.map((category,index) => state.HTML`<li class=${`${category[1] ? "active" : ""} text-center col tag`}><a href="#/${category[0]}" onclick=${toggleCategory(index)}>${category[0]}</a></li>`)}
-      <li class=${`${state.filter === "active" ? "active" : ""} text-center col tag`}><a href="#/active" onclick=${filter("active")}>Active</a></li>
-      <li class=${`${state.filter === "completed" ? "active" : ""} text-center col tag`}><a href="#/completed" onclick=${filter("completed")}>Completed</a></li>
+        <li class=${`${state.filter ? "" : "active"} text-center col tag`}><a href="#/" onclick=${filter(false)}>All</a></li>
+        <li class=${`${state.filter === "active" ? "active" : ""} text-center col tag`}><a href="#/active" onclick=${filter("active")}>Active</a></li>
+        <li class=${`${state.filter === "completed" ? "active" : ""} text-center col tag`}><a href="#/completed" onclick=${filter("completed")}>Completed</a></li>
+        ${state.categories.map((category,index) => state.HTML`<li class=${`${category[1] ? "active" : ""} ${"category"+(index+1)} text-center col tag`}><a href="#/${category[0]}" onclick=${toggleCategory(index)}>${category[0]}</a></li>`)}
       </ul>
      <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hide"} col italic text-right clear-completed`}>Clear Completed</button>
     </div>
