@@ -2,6 +2,7 @@ main ul#todos,#instructions,#stats{
     margin: 10px auto;
     width: 40em;
     max-width: 100%;
+    padding: 4px;
   }
   
   main ul#todos.priority{
@@ -186,13 +187,16 @@ main ul#todos,#instructions,#stats{
     display: block;
   }
 
-  #filters .tag a{
+  #filters .tag button{
     color: var(--lightGrey);
     display: block;
     width: 100%;
+    font-size: 1em;
+    background: none;
+    padding: 0;
   }
 
-  #filters .tag a:hover{
+  #filters .tag button:hover{
     color: var(--darkGrey);
   }
 
@@ -204,9 +208,8 @@ main ul#todos,#instructions,#stats{
     border-color: var(--darkGrey);
   }
 
-  #filters .active.tag a{
+  #filters .active.tag button{
     color: var(--darkGrey);
-    font-weight: bold;
   }
 
   #filters .clear-completed{

@@ -22,7 +22,7 @@ const View = state => {
     const currentList = () =>  state.mode === "completed" ? [...state.list.filter(item => item.complete),...state.completed]
                       : state.mode === "snoozed" ? state.list.filter(item => item.snoozed && item.snoozed - Date.now() > 0)
                       : state.mode === "priority"  ? state.list.filter(item => !item.complete && (!item.snoozed || item.snoozed - Date.now() < 0)).slice(0,3) 
-                      : state.list.filter(item => (state.filter ? state.filter === "completed" ? item.complete : !item.complete : item) && (!item.category || state.categories.find(category => category[0] === item.category)[1]) && (!item.snoozed || item.snoozed - Date.now() < 0))
+                      : state.list.filter(item => ((state.complete && item.complete) || (state.active && !item.complete)) && (!item.category || state.categories.find(category => category[0] === item.category)[1]) && (!item.snoozed || item.snoozed - Date.now() < 0))
     
     // clears completed tasks
     const clearComplete = () => state.Update({
@@ -55,13 +55,7 @@ const View = state => {
     
     const dragleave = event => event.target.classList.remove("over")
 
-    const filter = type => event => {
-      event.preventDefault()
-      state.Update({filter: type})
-    }
-
     const toggleCategory = index => event => {
-      event.preventDefault()
       const category = state.categories[index]
       state.Replace("categories",index,[category[0],!category[1]])
     }
@@ -137,10 +131,9 @@ const View = state => {
      state.HTML`
      <div id="filters" class=${`${state.mode === "tasks" ? "" : "hidden"} row`}>
      <ul id="filters" class="col-9 row no-bullet">
-        <li class=${`${state.filter ? "" : "active"} text-center col tag`}><a href="#/" onclick=${filter(false)}>All</a></li>
-        <li class=${`${state.filter === "active" ? "active" : ""} text-center col tag`}><a href="#/active" onclick=${filter("active")}>Active</a></li>
-        <li class=${`${state.filter === "completed" ? "active" : ""} text-center col tag`}><a href="#/completed" onclick=${filter("completed")}>Completed</a></li>
-        ${state.categories.map((category,index) => state.HTML`<li class=${`${category[1] ? "active" : ""} ${"category"+(index+1)} text-center col tag`}><a href="#/${category[0]}" onclick=${toggleCategory(index)}>${category[0]}</a></li>`)}
+        <li class=${`${state.active ? "active" : ""} text-center tag`}><button onclick=${e => state.Update({active: !state.active})}>Active</button></li>
+        <li class=${`${state.complete ? "active" : ""} text-center tag`}><button onclick=${e => state.Update({complete: !state.complete})}>Completed</button></li>
+        ${state.categories.map((category,index) => state.HTML`<li class=${`${category[1] ? "active" : ""} ${"category"+(index+1)} text-center tag`}><button onclick=${toggleCategory(index)}>${category[0]}</button></li>`)}
       </ul>
      <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hide"} col italic text-right clear-completed`}>Clear Completed</button>
     </div>
@@ -166,7 +159,8 @@ const View = state => {
     list: [],
     completed: [],
     mode: "tasks",
-    filter: false,
+    active: true,
+    complete: true,
     categories: [["Home",true],["Work",true],["Hobbies",true]],
     Initiate,
     LocalStorageKey: "priority96",
