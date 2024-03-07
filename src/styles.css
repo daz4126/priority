@@ -180,6 +180,9 @@ main ul#todos,#instructions,#stats{
     .buttons button{
       font-size: 1em;
     }
+    .list-item:hover .task-buttons{
+      position: static;
+    }
   }
 
   #stats-button{

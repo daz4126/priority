@@ -66,13 +66,11 @@ const View = state => {
      state.HTML`<li class="list-item" id="${item.id}" key="${item.id}" draggable=${state.mode === "tasks"} ondragstart=${dragstart} ondragend=${dragend} ondragover=${ e => e.preventDefault() } ondrop=${ e => e.preventDefault() } ondragleave=${dragleave}>
      ${state.mode === "tasks" && state.HTML`<span class="number">${position}</span>`}
      ${state.mode === "priority" && state.HTML`<span class="exclamation">!</span>`}
-
-     ${state.mode === "completed" ? "" : 
-            state.HTML`<input type="checkbox" 
-                              checked=${item.complete} 
-                              onchange=${check(item)} />`}
-                       <span class=${item.complete && state.mode !== "completed" ? "completed-task" : "task"}>${item.text}</span>
-                       ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`
+    <input type="checkbox" 
+           checked=${item.complete} 
+           onchange=${check(item)} />
+      <span class=${item.complete && state.mode !== "completed" ? "completed-task" : "task"}>${item.text}</span>
+      ${(state.mode === "tasks" || state.mode === "snoozed") && state.HTML`
       <div class="task-buttons">
       <button class="inline outline delete-button" onclick=${e => state.Update({list: state.list.filter(x => x.id !== item.id)})}><i class="fa-solid fa-trash"></i></button>   
    ${state.mode === "snoozed" ?
