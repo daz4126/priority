@@ -112,7 +112,7 @@ const View = state => {
     </header>
     <main>
     ${
-      state.mode === "instructions" ?
+      !state.user ?
       state.HTML`<section id="instructions">
     <h1 class="display-3">The todo list that lets you focus on what's important ...</h1><ul>
     <li>Order your tasks by priority.</li>
@@ -145,23 +145,16 @@ const View = state => {
     </footer>`
   }
   
-  // Initiate function - always runs at the start
-  const Initiate = state => {
-    return {
-      mode: state.list.length ? "tasks" : "instructions"
-    }
-  }
-  
   // initial state
   const State = {
     list: [],
     completed: [],
+    user: "OG",
     mode: "tasks",
     active: true,
     complete: true,
     categories: [["Home",true],["Work",true],["Hobbies",true]],
-    Initiate,
-    LocalStorageKey: "priority96",
+    LocalStorageKey: "priority97",
     Debug: true,
     View
   }
