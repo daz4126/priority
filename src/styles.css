@@ -183,6 +183,10 @@ main ul#todos,#instructions,#stats{
     .list-item:hover .task-buttons{
       position: static;
     }
+
+    #filters ul{
+      width: 100%;
+    }
   }
 
   #stats-button{

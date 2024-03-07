@@ -132,7 +132,7 @@ const View = state => {
         <li class=${`${state.active ? "active" : ""} text-center tag`}><button onclick=${e => state.Update({active: !state.active})}>Active</button></li>
         <li class=${`${state.complete ? "active" : ""} text-center tag`}><button onclick=${e => state.Update({complete: !state.complete})}>Completed</button></li>
         ${state.categories.map((category,index) => state.HTML`<li class=${`${category[1] ? "active" : ""} ${"category"+(index+1)} text-center tag`}><button onclick=${toggleCategory(index)}>${category[0]}</button></li>`)}
-      </ul>
+     </ul>
      <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hide"} col italic text-right clear-completed`}>Clear Completed</button>
     </div>
      <ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
