@@ -2,7 +2,7 @@ main ul#todos,#instructions,#stats{
     margin: 10px auto;
     width: 40em;
     max-width: 100%;
-    padding: 4px;
+    padding: 0 12px;
   }
   
   main ul#todos.priority{
