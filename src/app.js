@@ -59,7 +59,31 @@ const View = state => {
       const category = state.categories[index]
       state.Replace("categories",index,[category[0],!category[1]])
     }
+
+    const login = event => {
+      event.preventDefault()
+      state.Update({username: event.target.username.value})
+    }
+
+    const logout = event => {
+      event.preventDefault()
+      state.Update({username: null})
+    }
+
+    // TopBar component
+    const TopBar = props =>
+      state.HTML`
+      <div id="topbar" class=${!state.username && "hidden"}>
+        <${User} username=${state.username} />
+        <button id="stats-button" class="float-end outline" onclick=${event => state.Update({mode: "stats"})}>Stats</button>
+      </div>`
     
+      // Login component
+      const User = props =>
+        state.HTML`
+        <span>
+          Logged in as ${props.username} | <a href="#" onclick=${logout}>Logout</a>
+        </span>`
     
     // ListItem component
     const ListItem = ({item,position}) => 
@@ -99,8 +123,9 @@ const View = state => {
     // main view
     return state.HTML`
     <header>
+    <${TopBar} />
     <h1 class="text-center" >PR<span class="blue-text">!</span>OR<span class="green-text">!</span>TY<span class="red-text">!</span></h1>
-    <div class="buttons row">
+    <div class=${`${!state.username && "hidden"} buttons row`}>
     <button class=${`${state.mode === "priority" ? "blue" : "outline"} col`} onclick=${event => state.Update({mode: "priority"})}>PR!OR!TY!</button>
       <button class=${`${state.mode === "tasks" ? "blue" : "outline"} col`} onclick=${event => state.Update({mode: "tasks"})}>Task List</button>
       <button class=${`${state.mode === "snoozed" ? "blue" : "outline"} col`} onclick=${event => state.Update({mode: "snoozed"})}>Snoozed</button>
@@ -112,18 +137,26 @@ const View = state => {
     </header>
     <main>
     ${
-      !state.user ?
+      !state.username ?
       state.HTML`<section id="instructions">
     <h1 class="display-3">The todo list that lets you focus on what's important ...</h1><ul>
     <li>Order your tasks by priority.</li>
     <li>Snooze any tasks you don't want to think about right now.</li>
     <li>Click on the PR!OR!TY! button to focus on your top 3 tasks.</li>
     </ul>
+    </section>
+    <section id="login">
+    <form onsubmit=${login}>
+      <label for="username">Enter your username to login:</label>
+      <input name="username" />
+      <button type="submit">Login</button>
+    </form>
     </section>`
     :
     state.mode === "stats" ?
       state.HTML`<section id="stats">
-      <p class="italic text-center">You have completed ${state.completed.length + state.list.filter(item => item.complete).length} task${state.completed.length + state.list.filter(item => item.complete).length === 1 ? "" : "s"}!</p>
+      <h2>Stats</h2>
+      <p class="italic text-center">You have completed ${state.completed.length + state.list.filter(item => item.complete).length} task${state.completed.length + state.list.filter(item => item.complete).length === 1 ? "" : "s"} in total!</p>
        </section>`
     :     
      state.HTML`
@@ -136,9 +169,8 @@ const View = state => {
      <button onclick=${clearComplete} class=${`${state.list.filter(item => item.complete).length ? "" : "hide"} col italic text-right clear-completed`}>Clear Completed</button>
     </div>
      <ul id="todos" class=${`${state.mode === "priority" ? "priority" : ""} no-bullet`} ondragenter=${dragenter}>${currentList().map((item,index) => state.HTML`<${ListItem} item=${item} position=${index + 1} />`)}</ul>
-     <p id="message" class="text-center"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} thing${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>`
+     <p id="message" class="text-center blue-text"><em>${currentList().length ? state.mode === "tasks" ? `${currentList().filter(item => item.complete).length} thing${currentList().filter(item => item.complete).length === 1 ? "" : "s"} smushed so far ...` : "" : `This list is empty!`}</em></p>`
     }
-    <button id="stats-button" class=${`${state.mode === "stats" ? "blue" : "outline"}`} onclick=${event => state.Update({mode: "stats"})}>Stats</button>
     </main>
     <footer class="text-center" hidden=${state.mode === "priority"}>
     <p>Another beautifully unconventional <span class="JOG"><span class="J">J</span>O<span class="G">G</span></span> production made with 💚🤍💜</p>
@@ -149,7 +181,7 @@ const View = state => {
   const State = {
     list: [],
     completed: [],
-    user: "OG",
+    user: null,
     mode: "tasks",
     active: true,
     complete: true,

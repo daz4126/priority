@@ -1,4 +1,4 @@
-main ul#todos,#instructions,#stats{
+main ul#todos,#instructions,#stats,#login{
     margin: 10px auto;
     width: 40em;
     max-width: 100%;
@@ -79,14 +79,9 @@ main ul#todos,#instructions,#stats{
     margin-bottom: 2px;
   }
   
-  .buttons button:hover,#completed-button:hover{
+  .buttons button:hover,#stats-button:hover{
     background: var(--lightGrey) !important;
     color: var(--darkGrey);
-  }
-  
-  #completed-button{
-    display: block;
-    margin: 0 auto;
   }
   
   #add-task{
@@ -188,11 +183,6 @@ main ul#todos,#instructions,#stats{
     }
   }
 
-  #stats-button{
-    margin: 10px auto;
-    display: block;
-  }
-
   #filters .tag{
     padding: 0;
   }
@@ -255,4 +245,8 @@ main ul#todos,#instructions,#stats{
 
   #filters .category3.active, .list-item .category3{
     border-color: var(--red);
+  }
+
+  label{
+    font-weight: bold;
   }
